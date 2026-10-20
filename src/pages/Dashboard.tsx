@@ -45,13 +45,6 @@ export default function Dashboard() {
       PERSON_IDS.map((id) => [id, sum(month.filter((e) => e.paidBy === id).map((e) => e.amount))]),
     ) as Record<PersonId, number>
 
-    // gastos divididos meio a meio: quem pagou mais, tem a receber
-    const fairShare = total / PERSON_IDS.length
-    const [a, b] = PERSON_IDS
-    const diff = paid[a] - fairShare
-    const settle =
-      Math.abs(diff) < 0.01 ? null : { from: diff > 0 ? b : a, to: diff > 0 ? a : b, amount: Math.abs(diff) }
-
     const history = Array.from({ length: 6 }, (_, i) => {
       const d = new Date(now.getFullYear(), now.getMonth() - (5 - i), 1)
       const key = monthKey(toISODate(d))
@@ -66,10 +59,10 @@ export default function Dashboard() {
       .sort((x, y) => (x.date === y.date ? 0 : x.date < y.date ? 1 : -1))
       .slice(0, 8)
 
-    return { now, total, income, byCategory, paid, settle, history, recent }
+    return { now, total, income, byCategory, paid, history, recent }
   }, [expenses])
 
-  const { total, income, settle } = data
+  const { total, income } = data
   const balance = income - total
   const budgetPct = Math.min(100, (total / MONTHLY_BUDGET) * 100)
   const overBudget = total > MONTHLY_BUDGET
@@ -132,16 +125,6 @@ export default function Dashboard() {
             )
           })}
         </div>
-        <p className="mt-4 rounded-xl bg-bg px-3 py-2 text-sm">
-          {settle ? (
-            <>
-              🤝 <b>{PEOPLE[settle.from].name}</b> deve <b>{formatBRL(settle.amount)}</b> a{' '}
-              <b>{PEOPLE[settle.to].name}</b> para fechar as contas.
-            </>
-          ) : (
-            <>🤝 Tudo quite entre vocês!</>
-          )}
-        </p>
       </Card>
 
       <Card title="Gastos por categoria">
