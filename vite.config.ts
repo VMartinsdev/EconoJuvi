@@ -4,6 +4,8 @@ import tailwindcss from '@tailwindcss/vite'
 import { VitePWA } from 'vite-plugin-pwa'
 
 export default defineConfig({
+  // No GitHub Pages sem domínio próprio o site fica em /EconoJuvi/ (definido no workflow)
+  base: process.env.BASE_PATH ?? '/',
   plugins: [
     react(),
     tailwindcss(),
@@ -15,8 +17,6 @@ export default defineConfig({
         short_name: 'EconoJuvi',
         description: 'Controle de finanças do casal',
         lang: 'pt-BR',
-        start_url: '/',
-        scope: '/',
         display: 'standalone',
         orientation: 'portrait',
         background_color: '#f6f7f9',
