@@ -4,7 +4,7 @@ import tailwindcss from '@tailwindcss/vite'
 import { VitePWA } from 'vite-plugin-pwa'
 
 export default defineConfig({
-  // Caminho base do site; definido pelo workflow de deploy (veja .github/workflows/deploy.yml)
+  // No GitHub Pages sem domínio próprio o site fica em /EconoJuvi/ (definido no workflow)
   base: process.env.BASE_PATH ?? '/',
   plugins: [
     react(),
